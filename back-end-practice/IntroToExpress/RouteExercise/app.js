@@ -9,22 +9,16 @@ app.get('/', (req, res) => {
 });
 
 app.get('/speak/:param', (req, res) => {
-    const { param } = req.params;
+    const param = req.params.param.toLowerCase();
 
-    switch (param) {
-        case "pig":
-            res.send("Oink");
-            break;
-        case "cow":
-            res.send("Moo");
-            break;
-        case "dog":
-            res.send("Woof Woof!");
-            break;
-        default:
-            res.send(errorMessage);
-            break;
-    }
+    const sound = {
+        pig: "Oink",
+        cow: "Moo",
+        dog: "Woof Woof!",
+        goldfish: "..."
+    };
+
+    res.send(`The ${param} says ${sound[param]}`);
 });
 
 app.get('/repeat/:word/:times', (req, res) => {
