@@ -1,0 +1,14 @@
+<h1> Movie data</h1>
+
+<% if (data) { %>
+    <ul>
+        <% data.forEach((movie) => { %>
+            <li> <strong>Title: <%= movie.Title%></strong> Year: <%= movie.Year%> </li>
+            <img src="<%= movie.Poster%>">
+        <% }) %>
+    </ul>
+<% } else { %>
+    <h3>No movie found</h3>
+<% }%>
+
+<a href="/">Search Again</a>
