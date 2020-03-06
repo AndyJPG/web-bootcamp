@@ -16,6 +16,7 @@ const campgrounds = [
 mongoose.connect("mongodb://127.0.0.1:27017/yelp_camp");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
+app.set("views", __dirname + "/views");
 
 
 const campgroundSchema = new mongoose.Schema({

@@ -3,7 +3,8 @@ const app = express();
 const request = require('request');
 const port = 3000;
 
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
+app.set("views", __dirname + "/views");
 
 app.get("/", (req, res) => {
     res.render('search');
