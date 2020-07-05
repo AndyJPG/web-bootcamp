@@ -26,5 +26,5 @@ app.get('/posts', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log("Server is listening in port" + port);
+    console.log("Server is listening in port " + port);
 });
