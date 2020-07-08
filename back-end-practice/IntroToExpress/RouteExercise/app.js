@@ -8,8 +8,8 @@ app.get('/', (req, res) => {
     res.send('Hi there, welcome to my assignment!');
 });
 
-app.get('/speak/:param', (req, res) => {
-    const param = req.params.param.toLowerCase();
+app.get('/speak/:animal', (req, res) => {
+    const param = req.params.animal.toLowerCase();
 
     const sound = {
         pig: "Oink",
@@ -26,7 +26,7 @@ app.get('/repeat/:word/:times', (req, res) => {
    let result = word;
    for (let i = 0; i < times - 1; i++) {
        result += ` ${word}`;
-   };
+   }
    res.send(result);
 });
 

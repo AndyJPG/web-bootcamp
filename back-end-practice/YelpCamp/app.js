@@ -13,9 +13,10 @@ const campgrounds = [
     {name: 'Cherry Hill', image: 'https://images.unsplash.com/photo-1504851149312-7a075b496cc7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=949&q=80'}
 ];
 
-mongoose.connect("mongodb://127.0.0.1:27017/yelp_camp");
+mongoose.connect("mongodb://0.0.0.0:27017/yelp_camp");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
+app.set("views", __dirname + "/views");
 
 
 const campgroundSchema = new mongoose.Schema({
@@ -39,10 +40,20 @@ const Campground = mongoose.model("Campground", campgroundSchema);
 //     }
 // });
 
+// RESTFUL ROUTES
+//
+//name      url         verb        desc.
+// ================================================
+// INDEX    /dogs       GET         Display a list of all dogs
+// NEW      /dogs/new   GET         Display form to make a new dog
+// CREATE   /dogs       POST        Add new dog to database
+
+
 app.get('/', (req, res) => {
     res.render("landing");
 });
 
+//INDEX
 app.get('/campgrounds', (req, res) => {
     Campground.find({}, (err, campgrounds) => {
         if(err) {
@@ -54,6 +65,7 @@ app.get('/campgrounds', (req, res) => {
 
 });
 
+//CREATE
 app.post('/campgrounds', (req, res) => {
     const { name, imageUrl, description } = req.body;
     const newCampGround = {name: name, image: imageUrl, description: description};
@@ -67,6 +79,7 @@ app.post('/campgrounds', (req, res) => {
     });
 });
 
+//NEW
 app.get("/campgrounds/new", (req, res) => {
    res.render('new');
 });

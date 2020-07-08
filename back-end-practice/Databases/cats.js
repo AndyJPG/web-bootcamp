@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/demo");
+mongoose.connect("mongodb://0.0.0.0:27017/demo");
 
 const catSchema = new mongoose.Schema({
     name: String,
@@ -24,17 +24,17 @@ const Cat = mongoose.model("Cat", catSchema);
 //     }
 // });
 
-Cat.create({
-    name: "Snow White",
-    age: 15,
-    temperament: "Bland"
-}, (err, cat) => {
-    if(err) {
-        console.log(err);
-    } else {
-        console.log(cat);
-    }
-});
+// Cat.create({
+//     name: "Snow White",
+//     age: 15,
+//     temperament: "Bland"
+// }, (err, cat) => {
+//     if(err) {
+//         console.log(err);
+//     } else {
+//         console.log(cat);
+//     }
+// });
 
 Cat.find({}, (err, cats) => {
     if(err) {

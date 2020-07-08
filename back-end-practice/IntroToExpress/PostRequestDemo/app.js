@@ -7,6 +7,7 @@ let friends = ["Tome", "Andy", "Hello", "Claire"];
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+app.set("views", __dirname + "/views");
 
 app.get("/", (req, res) => {
     res.render("home");
