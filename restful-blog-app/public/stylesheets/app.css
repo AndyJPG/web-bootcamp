@@ -9,3 +9,7 @@ i.icon {
 img {
     max-width: 40vw;
 }
+
+#delete {
+    display: inline;
+}

@@ -48,6 +48,7 @@ const Campground = mongoose.model("Campground", campgroundSchema);
 // NEW      /dogs/new   GET         Display form to make a new dog
 // CREATE   /dogs       POST        Add new dog to database
 
+
 app.get('/', (req, res) => {
     res.render("landing");
 });
