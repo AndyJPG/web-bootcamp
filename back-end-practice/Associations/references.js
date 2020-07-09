@@ -1,27 +1,30 @@
 const mongoose = require('mongoose');
 mongoose.connect("mongodb://localhost/blog_demo");
 
+const Post = require("./models/post");
+const User = require("./models/user");
+
 // Reference data using embed method
 // POST - title, content
-const postSchema = new mongoose.Schema({
-    title: String,
-    content: String
-})
-const Post = mongoose.model("Post", postSchema)
+// const postSchema = new mongoose.Schema({
+//     title: String,
+//     content: String
+// })
+// const Post = mongoose.model("Post", postSchema)
 
 // USER - email, name
-const userSchema = new mongoose.Schema({
-    email: String,
-    name: String,
-    posts: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Post"
-        }
-    ]
-})
-
-const User = mongoose.model("User", userSchema)
+// const userSchema = new mongoose.Schema({
+//     email: String,
+//     name: String,
+//     posts: [
+//         {
+//             type: mongoose.Schema.Types.ObjectId,
+//             ref: "Post"
+//         }
+//     ]
+// })
+//
+// const User = mongoose.model("User", userSchema)
 
 // User.create({
 //     email: "bob@gmail.com",
@@ -29,8 +32,8 @@ const User = mongoose.model("User", userSchema)
 // })
 
 // Post.create({
-//     title: "How to cook pt 2.5",
-//     content: "blah blah blah"
+//     title: "How to cook pt 4",
+//     content: "sd jiknill"
 // }, (err, post) => {
 //     if(err) {
 //         console.log(err);
