@@ -91,7 +91,6 @@ app.post("/campgrounds/:id/comments", (req, res) => {
             console.log(err);
             res.redirect("/campgrounds");
         } else {
-            console.log(req.body.comment)
             Comment.create(req.body.comment, (err, comment) => {
                 if(err) {
                     console.log(err);
