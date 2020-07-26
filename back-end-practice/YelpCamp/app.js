@@ -1,44 +1,36 @@
-const express = require('express');
-const app = express();
-const port = 3000;
-const bodyParser = require('body-parser');
-const mongoose = require("mongoose");
+const express = require('express'),
+    app = express(),
+    port = 3000,
+    bodyParser = require('body-parser'),
+    mongoose = require("mongoose"),
+    passport = require("passport"),
+    LocalStrategy = require("passport-local");
 
-const campgrounds = [
-    {name: 'Salmon Creek', image: 'https://paperbarkcamp.com.au/wp-content/uploads/2019/07/paperbark_flash-camp_news_1218x650.jpg'},
-    {name: 'Box Hill', image: 'https://images.unsplash.com/photo-1537905569824-f89f14cceb68?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2747&q=80'},
-    {name: 'Cherry Hill', image: 'https://images.unsplash.com/photo-1504851149312-7a075b496cc7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=949&q=80'},
-    {name: 'Creek', image: 'https://images.unsplash.com/photo-1532339142463-fd0a8979791a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80'},
-    {name: 'Sovereign Hill', image: 'https://images.unsplash.com/photo-1517824806704-9040b037703b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80'},
-    {name: 'Cherry Hill', image: 'https://images.unsplash.com/photo-1504851149312-7a075b496cc7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=949&q=80'}
-];
+const Campground = require("./models/campground"),
+    Comment = require("./models/comment"),
+    seedDB = require("./seeds"),
+    User = require("./models/user");
 
 mongoose.connect("mongodb://0.0.0.0:27017/yelp_camp");
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(__dirname + "/public"));
 app.set('view engine', 'ejs');
 app.set("views", __dirname + "/views");
 
+// Seeds database
+// seedDB()
 
-const campgroundSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description: String
-});
-
-const Campground = mongoose.model("Campground", campgroundSchema);
-
-// Campground.create({
-//     name: "Box Hill",
-//     image: 'https://images.unsplash.com/photo-1537905569824-f89f14cceb68?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2747&q=80',
-//     description: "Beautiful Boxhil campground "
-// }, (err, campground) => {
-//     if(err) {
-//         console.log(err);
-//     } else {
-//         console.log("New campground");
-//         console.log(campground);
-//     }
-// });
+// PASSPORT CONFIGURATION
+app.use(require("express-session")({
+    secret: "Great yelp camp",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // RESTFUL ROUTES
 //
@@ -59,7 +51,7 @@ app.get('/campgrounds', (req, res) => {
         if(err) {
             console.log(err);
         } else {
-            res.render('index', {campgrounds: campgrounds});
+            res.render('campgrounds/index', {campgrounds: campgrounds});
         }
     });
 
@@ -81,18 +73,73 @@ app.post('/campgrounds', (req, res) => {
 
 //NEW
 app.get("/campgrounds/new", (req, res) => {
-   res.render('new');
+   res.render('campgrounds/new');
 });
 
 app.get("/campgrounds/:id", (req, res) => {
-    Campground.findById(req.params.id, (err, camp) => {
+    Campground.findById(req.params.id).populate("comments").exec((err, camp) => {
        if(err) {
            console.log(err);
        } else {
-           res.render("show", {campground: camp});
+           res.render("campgrounds/show", {campground: camp});
        }
     });
 });
+
+// ========================
+// COMMENTS ROUTES
+// ========================
+
+app.get("/campgrounds/:id/comments/new", (req, res) => {
+    Campground.findById(req.params.id, (err, campground) => {
+        if(err) {
+            console.log(err);
+        } else {
+            res.render("comments/new", {campground: campground});
+        }
+    })
+})
+
+app.post("/campgrounds/:id/comments", (req, res) => {
+    Campground.findById(req.params.id, (err, campground) => {
+        if(err) {
+            console.log(err);
+            res.redirect("/campgrounds");
+        } else {
+            Comment.create(req.body.comment, (err, comment) => {
+                if(err) {
+                    console.log(err);
+                } else {
+                    campground.comments.push(comment);
+                    campground.save();
+                    res.redirect("/campgrounds/" + campground._id);
+                }
+            })
+        }
+    })
+})
+
+// ========================
+// AUTH ROUTES
+// ========================
+
+app.get('/register', (req, res) => {
+    res.render("register");
+})
+
+//handle sign up logic
+app.post('/register', (req, res) => {
+    const newUser = new User({username: req.body.username});
+    User.register(newUser, req.body.password, (err, user) => {
+        if(err) {
+            console.log(err);
+            return res.render('register');
+        }
+        passport.authenticate("local")(req, res, () => {
+            res.redirect('/campgrounds');
+        })
+    })
+})
 
 app.listen(port, () => {
     console.log(`App listening at port ${port}`);
