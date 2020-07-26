@@ -2,11 +2,14 @@ const express = require('express'),
     app = express(),
     port = 3000,
     bodyParser = require('body-parser'),
-    mongoose = require("mongoose");
+    mongoose = require("mongoose"),
+    passport = require("passport"),
+    LocalStrategy = require("passport-local");
 
 const Campground = require("./models/campground"),
     Comment = require("./models/comment"),
-    seedDB = require("./seeds");
+    seedDB = require("./seeds"),
+    User = require("./models/user");
 
 mongoose.connect("mongodb://0.0.0.0:27017/yelp_camp");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -16,6 +19,18 @@ app.set("views", __dirname + "/views");
 
 // Seeds database
 // seedDB()
+
+// PASSPORT CONFIGURATION
+app.use(require("express-session")({
+    secret: "Great yelp camp",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // RESTFUL ROUTES
 //
@@ -101,6 +116,28 @@ app.post("/campgrounds/:id/comments", (req, res) => {
                 }
             })
         }
+    })
+})
+
+// ========================
+// AUTH ROUTES
+// ========================
+
+app.get('/register', (req, res) => {
+    res.render("register");
+})
+
+//handle sign up logic
+app.post('/register', (req, res) => {
+    const newUser = new User({username: req.body.username});
+    User.register(newUser, req.body.password, (err, user) => {
+        if(err) {
+            console.log(err);
+            return res.render('register');
+        }
+        passport.authenticate("local")(req, res, () => {
+            res.redirect('/campgrounds');
+        })
     })
 })
 
