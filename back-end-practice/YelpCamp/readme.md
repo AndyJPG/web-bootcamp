@@ -52,3 +52,20 @@ CREATE  /campgrounds/:id/comments        POST
 #Auth CodeAlong Part 5
 * Add logout Route
 * Add isLoggedIn middleware
+
+##YelpCamp Auth Pt. 2 - Register
+* Configure Passport
+* Add register routes
+* Add register template
+
+##YelpCamp Auth Pt. 3 - Login
+* Add login routes
+* Add login template
+
+##YelpCamp Auth Pt. 4 - logout/navbar
+* Add logout routes
+
+##YelpCamp Auth Pt. 5 - Show/Hide Links
+* Show/hide auth links in navbar correctly
+
+##YelpCamp routes refactoring
