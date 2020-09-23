@@ -69,3 +69,7 @@ CREATE  /campgrounds/:id/comments        POST
 * Show/hide auth links in navbar correctly
 
 ##YelpCamp routes refactoring
+
+##Users + Comments
+* Associate users and comments
+* Save author's name to a comment automatically
