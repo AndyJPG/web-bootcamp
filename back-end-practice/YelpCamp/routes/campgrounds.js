@@ -17,9 +17,9 @@ router.get('/', (req, res) => {
 
 //CREATE
 router.post('/', middleware.isLoggedIn, (req, res) => {
-    const { name, imageUrl, description } = req.body;
+    const { name, imageUrl, price, description } = req.body;
     const author = {id: req.user._id, username: req.user.username};
-    const newCampGround = {name: name, image: imageUrl, description: description, author: author};
+    const newCampGround = {name: name, image: imageUrl, price: price, description: description, author: author};
 
     Campground.create(newCampGround, (err, newCamp) => {
         if(err) {
@@ -36,6 +36,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
     res.render('campgrounds/new');
 });
 
+// Show
 router.get("/:id", (req, res) => {
     Campground.findById(req.params.id).populate("comments").exec((err, camp) => {
         if(err) {
