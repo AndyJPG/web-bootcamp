@@ -2,12 +2,12 @@
 
 <div class="container">
     <div class="row row-cols-1">
-        <h1 style="text-align: center">Add New Comment to <%= campground.name %></h1>
+        <h1 style="text-align: center">Edit Comment</h1>
 
         <div style="width: 30%; padding: 0px 35%; margin: 30px 0">
-            <form action="/campgrounds/<%= campground._id %>/comments" method="POST">
+            <form action="/campgrounds/<%= campground_id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
                 <div class="form-group">
-                    <input class="form-control" type="text" name="comment[text]" placeholder="text">
+                    <input class="form-control" type="text" name="comment[text]" value="<%= comment.text %>">
                 </div>
 
                 <button class="btn btn-large btn-primary btn-block">Submit</button>

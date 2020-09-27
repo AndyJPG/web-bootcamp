@@ -52,3 +52,40 @@ CREATE  /campgrounds/:id/comments        POST
 #Auth CodeAlong Part 5
 * Add logout Route
 * Add isLoggedIn middleware
+
+##YelpCamp Auth Pt. 2 - Register
+* Configure Passport
+* Add register routes
+* Add register template
+
+##YelpCamp Auth Pt. 3 - Login
+* Add login routes
+* Add login template
+
+##YelpCamp Auth Pt. 4 - logout/navbar
+* Add logout routes
+
+##YelpCamp Auth Pt. 5 - Show/Hide Links
+* Show/hide auth links in navbar correctly
+
+##YelpCamp routes refactoring
+
+##Users + Comments
+* Associate users and comments
+* Save author's name to a comment automatically
+
+##Users + Campgrounds
+* Prevent an unauthenticated user from creating a campground
+* Save username+id to newly created Campground
+
+##Editing Campgrounds
+* Add Method-Override
+* Add Edit Route for Campgrounds
+* Add Link to Edit Page
+* Add Update Route
+* Fix $set problem
+
+##Authorization
+* User can only edit his/her campgrounds
+* User can only delete his/her campgrounds
+* Hide/Show edit and delete buttons
