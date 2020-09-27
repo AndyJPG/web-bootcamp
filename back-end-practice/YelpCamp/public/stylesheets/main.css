@@ -13,3 +13,7 @@
 .card {
     margin-top: 20px;
 }
+
+.delete-form {
+    display: inline;
+}
