@@ -5,7 +5,8 @@ const express = require('express'),
     mongoose = require("mongoose"),
     passport = require("passport"),
     LocalStrategy = require("passport-local"),
-    methodOverride = require("method-override");
+    methodOverride = require("method-override"),
+    flash = require('connect-flash');
 
 const seedDB = require("./seeds"),
     User = require("./models/user");
@@ -19,6 +20,7 @@ mongoose.connect("mongodb://0.0.0.0:27017/yelp_camp");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
+app.use(flash());
 app.set('view engine', 'ejs');
 app.set("views", __dirname + "/views");
 
@@ -41,6 +43,8 @@ passport.deserializeUser(User.deserializeUser());
 // allow every route to have req.user for currentUser
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 
