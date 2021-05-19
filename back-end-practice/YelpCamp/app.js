@@ -1,6 +1,6 @@
 const express = require('express'),
     app = express(),
-    port = 3000,
+    PORT = process.env.PORT || 3000,
     bodyParser = require('body-parser'),
     mongoose = require("mongoose"),
     passport = require("passport"),
@@ -60,6 +60,8 @@ app.use("/", indexRoutes);
 app.use('/campgrounds/:id/comments', commentRoutes);
 app.use('/campgrounds', campgroundRoutes);
 
-app.listen(port, () => {
-    console.log(`App listening at port ${port}`);
+console.log(process.env.DATABASEURL);
+
+app.listen(PORT, () => {
+    console.log(`App listening at port ${PORT}`);
 });
